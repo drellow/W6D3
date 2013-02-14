@@ -1,6 +1,5 @@
-var file = require './tic_tac_toe.js'
 
-var game = file.makeGame()
+var game = tic_tac_toe.makeGame();
 
 
 function printToScreen(string) {
@@ -12,12 +11,15 @@ function clear() {
   $('.output').html("");
 }
 
+printToScreen(game);
+
 function gameLoop() {
   game.initialize();
-  var players = ['X', 'O']
-  printToScreen(game.showBoard())
+  var players = ['X', 'O'];
+  printToScreen(game.showBoard());
+  var playing = true
 
-  while (true) {
+  while (playing == true) {
     _.each(players, function(player) {
 
       var inputX = prompt("place which row?");
@@ -27,12 +29,11 @@ function gameLoop() {
       clear();
       printToScreen(game.showBoard());
 
-      if (game.gameWon()) {
-        printToScreen("Player" + player "wins!");
+      if (game.checkWon() == true) {
+        printToScreen("Player " + player + " wins!");
+        playing = false
       }
-
-
-    }
+    })
   }
 }
 

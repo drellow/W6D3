@@ -11,11 +11,31 @@ function makeGame() {
     },
 
     showBoard: function() {
-      return this.board;
+      _.each(this.board, function(row, i){
+        row_string = " ";
+        _.each(row, function(element, j) {
+          if (element == null) {
+            row_string += " ";
+          } else {
+            row_string += element;
+          }
+
+          if (j != 2) {
+            row_string += "|"
+          }
+        })
+        printToScreen((i + 1) + row_string);
+
+        if (i != 2) {
+          printToScreen("  -----");
+        }
+      });
+      
+      printToScreen("  1 2 3");
     },
 
     placeMark: function(x,y,mark) {
-      this.board[x][y] = mark;
+      this.board[x-1][y-1] = mark;
     },
 
     checkWon: function() {
@@ -51,6 +71,12 @@ function makeGame() {
   }
 }
 
-module.exports = {
-  makeGame: makeGame
+if (!(typeof module == 'undefined')) {
+  module.exports = {
+    makeGame: makeGame
+  };
+} else {
+  var tic_tac_toe = {
+    makeGame: makeGame
+  };
 }

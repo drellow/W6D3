@@ -8,11 +8,11 @@ function makeTowers() {
         [[4, 3, 2, 1],
          [],
          []];
-    }
+    },
 
     showTowers: function() {
       return this.towers;
-    }
+    },
 
     moveDisc: function(a, b) {
       if (validMove(a, b) == true) {
@@ -30,7 +30,7 @@ function makeTowers() {
           return false;
         }
       }
-    }
+    },
 
     checkWon: function() {
       return this.towers[1].length == 4 || this.towers[2].length == 4;
