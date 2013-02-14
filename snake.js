@@ -1,3 +1,5 @@
+var BOARD_SIZE = 20;
+
 function snake() {
   return {
 
@@ -38,10 +40,8 @@ function snake() {
     },
 
     step: function() {
-      console.log(this.body)
       this.body.shift();
       this.body.push(this.newPos());
-      console.log(this.body)
     }
   }
 }
@@ -49,24 +49,26 @@ function snake() {
 function game() {
   return {
 
-    initialize: function() {
+    makeBoard: function(str) {
       this.board = [];
       var that = this;
 
-      _.times(40, function() {
+      _.times(BOARD_SIZE, function() {
         var row = [];
-        _.times(40, function() {
-          row.push(" ");
+        _.times(BOARD_SIZE, function() {
+          row.push(str);
         })
         that.board.push(row);
       })
+      this.board[this.apple[0]][this.apple[1]] = "O";
     },
 
-    showBoard: function() {
+    showBoard: function(str) {
+      this.makeBoard(str);
       this.putSnakeInBoard();
 
       var bar = " ";
-      _.times(79, function() { bar += "-" });
+      _.times(((BOARD_SIZE * 2) - 1), function() { bar += "-" });
       printToScreen(bar);
 
       _.each(this.board, function(row) {
@@ -77,13 +79,68 @@ function game() {
     },
 
     putSnakeInBoard: function() {
-      this.initialize();
 
       var that = this;
 
       _.each(snake.body, function(coords) {
        that.board[coords[0]][coords[1]] = "*";
       })
+    },
+
+    over: function() {
+      var snakeHead = _.last(snake.body);
+
+      if (this.offBoard(snakeHead) == true || this.hitSelf(snakeHead) == true) {
+        return true;
+      }
+      return false;
+    },
+
+    offBoard: function(snakeHead) {
+      var off = false
+      _.each(snakeHead, function(coord) {
+        if (coord < 0 || coord >= BOARD_SIZE) {
+          off = true;
+          snake.body.pop();
+        }
+      })
+      return off;
+    },
+
+    hitSelf: function(snakeHead) {
+      var hit_self = false;
+
+      for (i = 0; i < (snake.body.length - 1); i++) {
+        var hit = true;
+        _.each(snake.body[i], function(coord, i) {
+          if (coord != snakeHead[i]) {
+            hit = false;
+          }
+        })
+        if (hit == true) {
+          hit_self = true;
+        }
+      }
+      return hit_self;
+    },
+
+    createApple: function() {
+      var coordX = Math.floor(Math.random() * BOARD_SIZE);
+      var coordY = Math.floor(Math.random() * BOARD_SIZE);
+
+      this.apple = [coordX, coordY];
+    },
+
+    hitApple: function() {
+      var that = this;
+      var hit = true
+      var snakeHead = _.last(snake.body);
+      _.each(snakeHead, function(coord, i) {
+        if (coord != that.apple[i]) {
+          hit = false;
+        }
+      })
+      return hit;
     }
   }
 }

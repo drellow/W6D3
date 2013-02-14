@@ -14,10 +14,9 @@ function clear() {
 
 STEP_TIME_MILLIS = 250;
 function runLoop() {
-  game.initialize();
   snake.initialize();
-
-  game.showBoard();
+  game.createApple();
+  game.showBoard(" ");
   parseKeydown();
 
   confirm("start game?");
@@ -40,19 +39,29 @@ function parseKeydown() {
       case 39:
         snake.turn("right")
         break;
-      // default:
-      //   console.log(event);
-      //   console.log(event.keyCode);
     }
   })
 }
 
 function runStep() {
+  var cont = true
   clear();
   snake.step();
-  game.showBoard();
+  if (game.over() == true) {
+    clear();
+    game.showBoard("X");
+    cont = false
+  }
 
-  window.setTimeout(runStep, STEP_TIME_MILLIS);
+  if (game.hitApple() == true) {
+    snake.grow();
+    game.createApple();
+  }
+
+  if (cont == true) {
+    game.showBoard(" ");
+    window.setTimeout(runStep, STEP_TIME_MILLIS);
+  }
 }
 
 runLoop();
