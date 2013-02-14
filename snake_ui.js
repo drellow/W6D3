@@ -12,16 +12,33 @@ function clear() {
 
 
 
+
 STEP_TIME_MILLIS = 250;
-function runLoop() {
+
+function userInterface() {
+  $('#pauseButton').click(function() {
+    alert("Game Paused");
+  });
+
+  $('#startButton').click(function() {
+    $('body').addClass('running')
+    kickOff();
+  });
+
+  $('#newButton').click(function() {
+    $('body').removeClass('newGame');
+    $('body').addClass('running')
+    kickOff();
+  });
+}
+
+function kickOff() {
+  clear();
   snake.initialize();
   game.createApple();
   game.showBoard(" ");
   parseKeydown();
-
-  confirm("start game?");
-
-  window.setTimeout(runStep, STEP_TIME_MILLIS);
+  runStep();
 }
 
 function parseKeydown() {
@@ -51,6 +68,8 @@ function runStep() {
     clear();
     game.showBoard("X");
     cont = false
+    $('body').removeClass('running');
+    $('body').addClass('newGame');
   }
 
   if (game.hitApple() == true) {
@@ -64,4 +83,5 @@ function runStep() {
   }
 }
 
-runLoop();
+userInterface();
+

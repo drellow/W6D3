@@ -1,13 +1,33 @@
 <html
 ><head>
+  <style>
+  .runningUI, .running .initialUI, .newGameUI, .newGame .initialUI {
+    display: none;
+  }
+
+  .initialUI, .running .runningUI, .newGame .newGameUI {
+    display: block;
+  }
+  </style>
 </head>
 
 <body>
   <pre class="output"></pre>
+  <div class='runningUI'>
+    <button id="pauseButton"> Pause </button>
+  </div>
+  <div class='initialUI'>
+    <button id="startButton"> Start </button>
+  </div>
+
+  <div class='newGameUI'>
+    <button id="newButton"> newGame </button>
+  </div>
 
   <script type="text/javascript" src="jquery-1.9.1.js"></script>
   <script type="text/javascript" src="node_modules/underscore/underscore.js"></script>
   <script type="text/javascript" src="snake.js"></script>
   <script type="text/javascript" src="snake_ui.js"></script>
+
 </body>
 </html>
